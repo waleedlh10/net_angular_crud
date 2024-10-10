@@ -36,6 +36,7 @@ export class TicketsService {
       },
     ];
   }
+
   get_table_content(): Ticket[] {
     return [
       {
@@ -81,5 +82,19 @@ export class TicketsService {
         actions: ['update', 'delete'],
       },
     ];
+  }
+
+  get_ticket(ticket_id: number): Ticket {
+    return {
+      ticket_id: 1,
+      description: 'Activate account',
+      status: 'Open',
+      date: new Date('08-05-2022'),
+      actions: ['update', 'delete'],
+    };
+  }
+
+  update_ticket(ticket: Ticket): boolean {
+    return true;
   }
 }
