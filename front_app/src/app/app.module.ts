@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { TableComponent } from './components/feature/table/table.component';
 import { EditComponent } from './components/feature/edit/edit.component';
 import { DashboardComponent } from './components/interfaces/dashboard/dashboard.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { DashboardComponent } from './components/interfaces/dashboard/dashboard.
     EditComponent,
     DashboardComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

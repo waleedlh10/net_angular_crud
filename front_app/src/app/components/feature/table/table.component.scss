@@ -1,0 +1,18 @@
+@import "src/styles";
+
+table {
+    thead {
+        tr {
+            th {
+                background-color: $primary_color;
+                color: #ffffff;
+            }
+
+            .add_button {
+                button {
+                    background-color: $primary_color;
+                }
+            }
+        }
+    }
+}

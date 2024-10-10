@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/interfaces/dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent }, // Default route
+  { path: '', component: DashboardComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
