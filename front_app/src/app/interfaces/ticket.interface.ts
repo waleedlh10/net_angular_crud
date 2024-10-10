@@ -6,3 +6,9 @@ export interface Ticket {
   actions: Array<'update' | 'delete'>;
   [key: string]: any;
 }
+
+export interface TicketCreate {
+  description: string;
+  status: 'Open' | 'Closed';
+  date: Date;
+}

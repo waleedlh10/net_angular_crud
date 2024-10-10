@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Ticket } from 'src/app/interfaces/ticket.interface';
 import { TicketsService } from 'src/app/services/tickets.service';
 
@@ -17,7 +17,8 @@ export class EditFeatureComponent {
   constructor(
     private fb: FormBuilder,
     private ticketsService: TicketsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.route.paramMap.subscribe((params) => {
       this.ticketId = +params.get('id')!;
@@ -45,7 +46,7 @@ export class EditFeatureComponent {
 
   formatDate(date: Date): string {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
@@ -55,6 +56,7 @@ export class EditFeatureComponent {
       const updatedTicket = this.ticketForm.getRawValue();
       console.log('Updated ticket:', updatedTicket);
       this.ticketsService.update_ticket(updatedTicket);
+      this.router.navigate(['tickets']);
     }
   }
 }

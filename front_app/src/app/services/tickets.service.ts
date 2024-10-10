@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Ticket } from '../interfaces/ticket.interface';
+import { Ticket, TicketCreate } from '../interfaces/ticket.interface';
 import { TableColumn } from '../interfaces/table.interface';
 
 @Injectable({
@@ -96,5 +96,15 @@ export class TicketsService {
 
   update_ticket(ticket: Ticket): boolean {
     return true;
+  }
+
+  create_ticket(ticket: TicketCreate): Ticket {
+    return {
+      ticket_id: 1,
+      description: ticket.description,
+      status: ticket.status,
+      date: ticket.date,
+      actions: ['update', 'delete'],
+    };
   }
 }

@@ -34,5 +34,6 @@ export class TableComponent implements OnInit {
   }
   go_to_add_ticket() {
     console.log('go_to_add_ticket');
+    this.router.navigate(['ticket', 'create']);
   }
 }
