@@ -25,6 +25,9 @@ export class TableComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
   toast_message: string = '';
   toast_timeout: number = 5;
+  total_pages: number = 5;
+  page: number = 0;
+  item_per_page: number = 10;
 
   constructor(
     private ticketsService: TicketsService,
@@ -44,8 +47,6 @@ export class TableComponent implements OnInit {
   }
 
   get_table_content() {
-    console.log('get_table_content');
-
     return this.ticketsService.get_table_content();
   }
 
@@ -108,5 +109,18 @@ export class TableComponent implements OnInit {
     this.toast_timeout = timeout;
 
     this.toast.show();
+  }
+
+  get_next_page() {
+    if (this.page < this.total_pages) {
+      this.page += 1;
+    }
+    this.get_table_content();
+  }
+  get_prevent_page() {
+    if (this.page > 1) {
+      this.page -= 1;
+    }
+    this.get_table_content();
   }
 }
