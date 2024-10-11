@@ -5,6 +5,7 @@ import { TableColumn } from 'src/app/interfaces/table.interface';
 import { Router } from '@angular/router';
 import { ModalComponent } from '../modal/modal.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastComponent } from '../toast/toast.component';
 
 @Component({
   selector: 'app-table',
@@ -21,6 +22,9 @@ export class TableComponent implements OnInit {
   order_col: string = ''; // sort column name
   order_dir: 'asc' | 'desc' = 'asc'; // sort direction
   filters_form: FormGroup = this.fb.group({}); // filter form
+  @ViewChild(ToastComponent) toast!: ToastComponent;
+  toast_message: string = '';
+  toast_timeout: number = 5;
 
   constructor(
     private ticketsService: TicketsService,
@@ -93,5 +97,12 @@ export class TableComponent implements OnInit {
         this.filters_form.addControl(field.DataName, this.fb.control(''));
       }
     });
+  }
+
+  show_toast(message: string, timeout: number = 5) {
+    this.toast_message = message;
+    this.toast_timeout = timeout;
+
+    this.toast.show();
   }
 }
