@@ -1,3 +1,17 @@
+.modal.show {
+    display: block;
+    opacity: 1;
+}
+
+.modal {
+    width: fit-content;
+    height: fit-content;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -75%);
+}
+
 .bg_hider {
     background-color: rgba(0, 0, 0, 0.428);
     width: 100%;
@@ -5,17 +19,6 @@
     position: absolute;
     left: 0;
     top: 0;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.4s;
-
-    &.show {
-        opacity: 1;
-        pointer-events: auto;
-    }
-}
-
-.modal {
     opacity: 0;
     pointer-events: none;
     transition: all 0.4s;
