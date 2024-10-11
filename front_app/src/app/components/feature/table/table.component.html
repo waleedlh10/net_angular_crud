@@ -1,4 +1,30 @@
 <div class="col">
+    <div class=" justify-content-end pagination d-flex justify-content-end p-2 gap-2 align-items-center">
+        <div>
+            <select id="per_page" (ngModelChange)="get_table_content()" class="form-control">
+                <option [value]="10">10</option>
+                <option [value]="25">25</option>
+                <option [value]="50">50</option>
+            </select>
+        </div>
+        <div>per page</div>
+        <div>|</div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn  p-2" (click)="get_prevent_page()">
+                <i class="bi bi-chevron-left"></i>
+            </button>
+            <button type="button" class="btn p-2 border-0" disabled>
+                <div class="pagination_details d-flex flex-nowrap gap-2">
+                    <span>{{page}}</span>
+                    <span>of</span>
+                    <span>{{total_pages}}</span>
+                </div>
+            </button>
+            <button type="button" class="btn  p-2" (click)="get_next_page()">
+                <i class="bi bi-chevron-right"></i>
+            </button>
+        </div>
+    </div>
     <div class="row">
         <table class="table table-bordered">
             <thead>
