@@ -76,8 +76,12 @@ export class TableComponent implements OnInit {
   }
 
   delete_ticket(): void {
-    if (this.ticket_selected_id)
+    if (this.ticket_selected_id) {
       this.ticketsService.delete_ticket(this.ticket_selected_id);
+      this.show_toast(
+        `The ticket number ${this.ticket_selected_id} id deleted successfully`
+      );
+    }
   }
 
   change_order(column_name: string) {
