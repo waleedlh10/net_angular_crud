@@ -4,8 +4,9 @@ table {
     thead {
         tr {
             th {
-                background-color: $primary_color;
+                // background-color: $primary_color;
                 color: #ffffff;
+                cursor: pointer;
             }
 
             .add_button {

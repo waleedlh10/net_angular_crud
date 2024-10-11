@@ -3,11 +3,46 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th scope="col" *ngFor="let table_column of table_columns">
-                        {{table_column.ColumnName}}</th>
+                    <th scope="col" *ngFor="let table_column of table_columns"
+                        (click)="change_order(table_column.DataName)" class="bg-success">
+                        <div class="w-100 d-flex justify-content-between">
+                            <div class="col_name">{{table_column.ColumnName}}</div>
+                            <div class="sort" *ngIf="order_col == table_column.DataName ? 'd-none' : ''">
+                                <i class="bi bi-chevron-down" *ngIf="order_dir == 'asc'"></i>
+                                <i class="bi bi-chevron-up" *ngIf="order_dir == 'desc'"></i>
+                            </div>
+                        </div>
+                    </th>
                 </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td *ngFor="let table_column of table_columns">
+                        <form [formGroup]="filters_form">
+                            <div class="w-100" *ngIf="table_column.DataName !== 'ticket_id'">
+                                <!-- 'date' -->
+                                <input *ngIf="table_column.DataName === 'date'" [id]="table_column.DataName" type="date"
+                                    formControlName="{{ table_column.DataName }}" class="form-control"
+                                    (ngModelChange)="get_table_content()" />
+
+                                <!-- 'status' -->
+                                <select *ngIf="table_column.DataName === 'status'" [id]="table_column.DataName"
+                                    (ngModelChange)="get_table_content()" formControlName="{{ table_column.DataName }}"
+                                    class="form-control">
+                                    <option value="All">All</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+
+                                <!-- other fields -->
+                                <input (ngModelChange)="get_table_content()"
+                                    *ngIf="table_column.DataName !== 'status' && table_column.DataName !== 'date' && table_column.DataName !== 'actions'"
+                                    [id]=" table_column.DataName" type="text"
+                                    formControlName="{{ table_column.DataName }}" class="form-control" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
                 <tr *ngFor="let row of table_content">
                     <td *ngFor="let table_column of table_columns">
                         <ng-container *ngIf="table_column.DataName === 'actions'; else normalCell">
