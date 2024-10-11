@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AddTicketInterfaceComponent } from './components/interfaces/add-ticket-interface/add-ticket-interface.component';
 import { AddTicketFeatureComponent } from './components/feature/add-ticket-feature/add-ticket-feature.component';
 import { ModalComponent } from './components/feature/modal/modal.component';
+import { ToastComponent } from './components/feature/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ModalComponent } from './components/feature/modal/modal.component';
     AddTicketInterfaceComponent,
     AddTicketFeatureComponent,
     ModalComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,
