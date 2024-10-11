@@ -75,7 +75,7 @@
     </div>
 </div>
 
-
+<app-toast [message]="toast_message"></app-toast>
 
 <app-modal #modal [title]="confirmation_modal_title" [bodyContent]="confirmation_modal_body"
     (confirmed)="delete_ticket()"></app-modal>

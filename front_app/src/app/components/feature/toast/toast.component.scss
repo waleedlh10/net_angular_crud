@@ -1,0 +1,13 @@
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    transition: all 1.4s;
+    opacity: 0 !important;
+    pointer-events: none;
+
+    &.show {
+        opacity: 1 !important;
+        pointer-events: auto;
+    }
+}
