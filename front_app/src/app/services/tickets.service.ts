@@ -107,4 +107,8 @@ export class TicketsService {
       actions: ['update', 'delete'],
     };
   }
+
+  delete_ticket(ticket_id: number) {
+    console.log(`The ticket number ${ticket_id} id deleted successfully`);
+  }
 }

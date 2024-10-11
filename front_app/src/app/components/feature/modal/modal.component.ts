@@ -1,4 +1,11 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-modal',
@@ -6,13 +13,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent {
-  show: boolean = true;
+  @ViewChild('modal', { static: false }) modal!: ElementRef;
+  @Input() title!: string;
+  @Input() bodyContent!: string;
+  show_modal: boolean = false;
+  @Output() confirmed = new EventEmitter<void>();
 
-  hide() {
-    this.show = false;
+  constructor() {}
+
+  show(): void {
+    this.show_modal = true;
   }
 
-  save() {
+  hide(): void {
+    this.show_modal = false;
+  }
+
+  confirm() {
+    this.confirmed.emit();
     this.hide();
   }
 }

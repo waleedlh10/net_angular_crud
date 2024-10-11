@@ -39,3 +39,8 @@
         </table>
     </div>
 </div>
+
+
+
+<app-modal #modal [title]="confirmation_modal_title" [bodyContent]="confirmation_modal_body"
+    (confirmed)="delete_ticket()"></app-modal>
