@@ -30,8 +30,14 @@ export class AddTicketFeatureComponent implements OnInit {
       const newTicket = this.ticketForm.value;
       console.log('New Ticket:', newTicket);
 
-      this.ticketsService.create_ticket(newTicket);
-      this.router.navigate(['tickets']);
+      this.ticketsService.create_ticket(newTicket).subscribe({
+        next: (data) => {
+          this.router.navigate(['tickets']);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
     }
   }
 }

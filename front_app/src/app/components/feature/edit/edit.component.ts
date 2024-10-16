@@ -12,7 +12,7 @@ import { TicketsService } from 'src/app/services/tickets.service';
 export class EditFeatureComponent {
   ticketId: number = 0;
   ticketForm!: FormGroup;
-  ticket: Ticket;
+  ticket!: Ticket;
 
   constructor(
     private fb: FormBuilder,
@@ -25,22 +25,29 @@ export class EditFeatureComponent {
       console.log('Ticket ID:', this.ticketId);
     });
 
-    this.ticket = this.ticketsService.get_ticket(this.ticketId);
-    this.initForm();
+    this.ticketsService.get_ticket(this.ticketId).subscribe(
+      (data: any) => {
+        console.log('data : :', data);
+        this.ticket = data;
+        this.initForm();
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 
   ngOnInit(): void {}
 
   initForm() {
     this.ticketForm = this.fb.group({
-      ticket_id: [
-        { value: this.ticket.ticket_id, disabled: true },
+      ticketId: [
+        { value: this.ticket.ticketId, disabled: true },
         Validators.required,
       ],
       description: [this.ticket.description, Validators.required],
       status: [this.ticket.status, Validators.required],
-      date: [this.formatDate(this.ticket.date), Validators.required],
-      actions: [this.ticket.actions],
+      date: [this.formatDate(new Date(this.ticket.date)), Validators.required],
     });
   }
 
@@ -54,9 +61,17 @@ export class EditFeatureComponent {
   onSubmit() {
     if (this.ticketForm.valid) {
       const updatedTicket = this.ticketForm.getRawValue();
+      // updatedTicket = { ...updatedTicket, date: new Date(updatedTicket.date) };
       console.log('Updated ticket:', updatedTicket);
-      this.ticketsService.update_ticket(updatedTicket);
-      this.router.navigate(['tickets']);
+      this.ticketsService.update_ticket(this.ticketId, updatedTicket).subscribe(
+        () => {
+          console.log('Ticket updated successfully');
+          this.router.navigate(['tickets']);
+        },
+        (error) => {
+          console.error('Error updating ticket', error);
+        }
+      );
     }
   }
 }

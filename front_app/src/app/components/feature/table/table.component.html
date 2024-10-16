@@ -1,7 +1,8 @@
 <div class="col">
     <div class=" justify-content-end pagination d-flex justify-content-end p-2 gap-2 align-items-center">
         <div>
-            <select id="per_page" (ngModelChange)="get_table_content()" class="form-control">
+            <select id="per_page" [(ngModel)]="item_per_page" (ngModelChange)="get_table_content()"
+                class="form-control">
                 <option [value]="10">10</option>
                 <option [value]="25">25</option>
                 <option [value]="50">50</option>
@@ -45,7 +46,7 @@
                 <tr>
                     <td *ngFor="let table_column of table_columns">
                         <form [formGroup]="filters_form">
-                            <div class="w-100" *ngIf="table_column.DataName !== 'ticket_id'">
+                            <div class="w-100" *ngIf="table_column.DataName !== 'ticketId'">
                                 <!-- 'date' -->
                                 <input *ngIf="table_column.DataName === 'date'" [id]="table_column.DataName" type="date"
                                     formControlName="{{ table_column.DataName }}" class="form-control"
@@ -55,7 +56,7 @@
                                 <select *ngIf="table_column.DataName === 'status'" [id]="table_column.DataName"
                                     (ngModelChange)="get_table_content()" formControlName="{{ table_column.DataName }}"
                                     class="form-control">
-                                    <option value="All">All</option>
+                                    <option value="">All</option>
                                     <option value="Open">Open</option>
                                     <option value="Closed">Closed</option>
                                 </select>
@@ -72,8 +73,8 @@
                 <tr *ngFor="let row of table_content">
                     <td *ngFor="let table_column of table_columns">
                         <ng-container *ngIf="table_column.DataName === 'actions'; else normalCell">
-                            <button *ngFor="let action of row[table_column.DataName]"
-                                (click)="performAction(action, row.ticket_id)" class="btn btn-link mx-1">
+                            <button *ngFor="let action of ['update','delete']"
+                                (click)="performAction(action, row.ticketId)" class="btn btn-link mx-1">
                                 {{ action | titlecase }}
                             </button>
                         </ng-container>

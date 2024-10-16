@@ -1,42 +1,64 @@
-# See http:/help.github.com/ignore-files/ for more about ignoring files.
+# Ignore build outputs
+bin/
+obj/
 
-# Compiled output
-front_app/dist
-front_app/tmp
-front_app/out-tsc
-front_app/bazel-out
+# Ignore User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
 
-# Node
-front_app/node_modules
-npm-debug.log
-yarn-error.log
+# Ignore logs
+*.log
+*.tlog
+*.vspscc
+*.vssscc
 
-# IDEs and editors
-front_app/.idea/
-.project
-.classpath
-front_app/.c9/
-*.launch
-front_app/.settings/
-*.sublime-workspace
+# Ignore database files
+*.mdf
+*.ldf
 
-# Visual Studio Code
-front_app/.vscode/*
-front_app/!.vscode/settings.json
-front_app/!.vscode/tasks.json
-front_app/!.vscode/launch.json
-front_app/!.vscode/extensions.json
-front_app/.history/*
+# Ignore Visual Studio files
+.vscode/
+.vs/
+.idea/
 
-# Miscellaneous
-front_app/.angular/cache
-front_app/.sass-cache/
-front_app/connect.lock
-front_app/coverage
-front_app/libpeerconnection.log
-testem.log
-front_app/typings
+# Ignore Rider IDE files
+.idea/
+.idea_modules/
 
-# System files
+# Ignore npm package directories
+front_app/node_modules/
+front_app/dist/
+front_app/tmp/
+front_app/out-tsc/
+
+# Ignore environment files
+front_app/src/environments/environment*.ts
+
+# Ignore generated code and compiled files
+front_app/aot/
+front_app/*.ngfactory.ts
+front_app/*.ngsummary.json
+
+# Ignore Angular build outputs
+front_app/dist/
+front_app/.angular/
+front_app/.angular/cache/
+
+# Ignore TypeScript compilation output
+front_app/**/*.js
+front_app/**/*.js.map
+
+# Ignore coverage reports
+front_app/coverage/
+
+# Ignore macOS-specific files
 .DS_Store
+
+# Ignore Windows-specific files
 Thumbs.db
+desktop.ini
+
+# Ignore build artifacts
+artifacts/

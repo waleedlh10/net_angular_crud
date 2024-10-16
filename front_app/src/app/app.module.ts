@@ -8,7 +8,7 @@ import { EditFeatureComponent } from './components/feature/edit/edit.component';
 import { EditComponent } from './components/interfaces/edit/edit.component';
 import { DashboardComponent } from './components/interfaces/dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddTicketInterfaceComponent } from './components/interfaces/add-ticket-interface/add-ticket-interface.component';
 import { AddTicketFeatureComponent } from './components/feature/add-ticket-feature/add-ticket-feature.component';
 import { ModalComponent } from './components/feature/modal/modal.component';
@@ -31,6 +31,7 @@ import { ToastComponent } from './components/feature/toast/toast.component';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

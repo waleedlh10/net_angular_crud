@@ -25,8 +25,8 @@ export class TableComponent implements OnInit {
   @ViewChild(ToastComponent) toast!: ToastComponent;
   toast_message: string = '';
   toast_timeout: number = 5;
-  total_pages: number = 5;
-  page: number = 0;
+  total_pages: number = 1;
+  page: number = 1;
   item_per_page: number = 10;
 
   constructor(
@@ -37,7 +37,7 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {
     this.table_columns = this.get_table_columns();
-    this.table_content = this.get_table_content();
+    this.get_table_content();
     this.order_col = this.table_columns[0].DataName;
     this.generateForm();
   }
@@ -47,7 +47,30 @@ export class TableComponent implements OnInit {
   }
 
   get_table_content() {
-    return this.ticketsService.get_table_content();
+    const { ticketId, description, status, date } = this.filters_form.value;
+
+    console.log('date', date);
+
+    this.ticketsService
+      .get_table_content(
+        this.page,
+        this.item_per_page,
+        ticketId,
+        description,
+        status,
+        date,
+        this.order_col,
+        this.order_dir
+      )
+      .subscribe({
+        next: (data) => {
+          this.table_content = data.tickets;
+          this.page = data.page;
+          this.total_pages = data.total_pages;
+        },
+        error: () => {},
+      });
+    // return ;
   }
 
   performAction(action: string, ticketId: number) {
@@ -68,7 +91,6 @@ export class TableComponent implements OnInit {
   }
 
   go_to_add_ticket() {
-    console.log('go_to_add_ticket');
     this.router.navigate(['ticket', 'create']);
   }
 
@@ -78,29 +100,34 @@ export class TableComponent implements OnInit {
 
   delete_ticket(): void {
     if (this.ticket_selected_id) {
-      this.ticketsService.delete_ticket(this.ticket_selected_id);
-      this.show_toast(
-        `The ticket number ${this.ticket_selected_id} id deleted successfully`
-      );
+      this.ticketsService
+        .delete_ticket(`${this.ticket_selected_id}`)
+        .subscribe({
+          next: () => {
+            this.show_toast(
+              `The ticket number ${this.ticket_selected_id} deleted successfully`
+            );
+            this.get_table_content();
+          },
+          error: () => {},
+        });
     }
   }
 
   change_order(column_name: string) {
-    if (this.order_col != column_name) this.order_col = column_name;
-    else
-      this.order_dir = this.order_dir =
-        this.order_dir === 'desc' ? 'asc' : 'desc';
+    if (column_name !== 'actions') {
+      if (this.order_col != column_name) this.order_col = column_name;
+      else
+        this.order_dir = this.order_dir =
+          this.order_dir === 'desc' ? 'asc' : 'desc';
 
-    this.get_table_content();
+      this.get_table_content();
+    }
   }
 
   generateForm(): void {
     this.table_columns.forEach((field) => {
-      if (field.DataName === 'status') {
-        this.filters_form.addControl('status', this.fb.control('All'));
-      } else {
-        this.filters_form.addControl(field.DataName, this.fb.control(''));
-      }
+      this.filters_form.addControl(field.DataName, this.fb.control(''));
     });
   }
 
@@ -114,13 +141,13 @@ export class TableComponent implements OnInit {
   get_next_page() {
     if (this.page < this.total_pages) {
       this.page += 1;
+      this.get_table_content();
     }
-    this.get_table_content();
   }
   get_prevent_page() {
     if (this.page > 1) {
       this.page -= 1;
+      this.get_table_content();
     }
-    this.get_table_content();
   }
 }

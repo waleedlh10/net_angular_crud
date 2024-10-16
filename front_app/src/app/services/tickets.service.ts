@@ -1,22 +1,24 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Ticket, TicketCreate } from '../interfaces/ticket.interface';
 import { TableColumn } from '../interfaces/table.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TicketsService {
+  private apiUrl = 'http://localhost:5210/api';
   table_columns: TableColumn[] = [];
   table_content: Ticket[] = [];
 
   constructor(private http: HttpClient) {}
 
   get_table_columns(): TableColumn[] {
-    return [
+    let table_columns = [
       {
         ColumnName: 'Ticket id',
-        DataName: 'ticket_id',
+        DataName: 'ticketId',
       },
       {
         ColumnName: 'Description',
@@ -35,80 +37,73 @@ export class TicketsService {
         DataName: 'actions',
       },
     ];
+    return table_columns;
   }
 
-  get_table_content(): Ticket[] {
-    return [
-      {
-        ticket_id: 1,
-        description: 'Activate account',
-        status: 'Open',
-        date: new Date('08-05-2022'),
-        actions: ['update', 'delete'],
-      },
-      {
-        ticket_id: 2,
-        description: 'Change payment method',
-        status: 'Closed',
-        date: new Date('04-05-2022'),
-        actions: ['update', 'delete'],
-      },
-      {
-        ticket_id: 3,
-        description: 'Request password reset',
-        status: 'Open',
-        date: new Date('10-10-2023'),
-        actions: ['update', 'delete'],
-      },
-      {
-        ticket_id: 4,
-        description: 'Update billing address',
-        status: 'Closed',
-        date: new Date('05-09-2023'),
-        actions: ['update', 'delete'],
-      },
-      {
-        ticket_id: 5,
-        description: 'Issue with order tracking',
-        status: 'Closed',
-        date: new Date('02-03-2023'),
-        actions: ['update', 'delete'],
-      },
-      {
-        ticket_id: 6,
-        description: 'Report a bug on the website',
-        status: 'Open',
-        date: new Date('07-07-2023'),
-        actions: ['update', 'delete'],
-      },
-    ];
+  get_table_content(
+    page: number = 1,
+    items_per_page: number = 10,
+    ticketId?: number,
+    description?: string,
+    status?: string,
+    date?: Date,
+    order_by: string = 'ticketId',
+    order_dir: string = 'asc'
+  ): Observable<any> {
+    // Validate items_per_page
+    if (items_per_page < 1 || items_per_page > 100) {
+      throw new Error('items_per_page must be between 1 and 100 .');
+    }
+
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('items_per_page', items_per_page.toString())
+      .set('order_by', order_by)
+      .set('order_dir', order_dir);
+
+    // Add optional filters to params
+    if (ticketId !== undefined) {
+      params = params.set('ticketId', ticketId.toString());
+    }
+    if (description) {
+      params = params.set('description', description);
+    }
+    if (status) {
+      params = params.set('status', status);
+    }
+    if (date) {
+      params = params.set('date', new Date(date).toISOString());
+      console.log('data : ', new Date(date).toISOString());
+    }
+
+    return this.http.get<any>(`${this.apiUrl}/ticket`, { params });
   }
 
-  get_ticket(ticket_id: number): Ticket {
-    return {
-      ticket_id: 1,
-      description: 'Activate account',
-      status: 'Open',
-      date: new Date('08-05-2022'),
-      actions: ['update', 'delete'],
+  get_ticket(ticketId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/ticket/${ticketId}`);
+  }
+
+  update_ticket(id: number, ticket: Ticket): Observable<void> {
+    const url = `${this.apiUrl}/ticket/${id}`; // Construct the URL with the ticket ID
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
     };
+
+    return this.http.put<void>(url, ticket, httpOptions);
   }
 
-  update_ticket(ticket: Ticket): boolean {
-    return true;
+  create_ticket(ticket: Ticket): Observable<Ticket> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.post<Ticket>(`${this.apiUrl}/ticket`, ticket, { headers });
   }
 
-  create_ticket(ticket: TicketCreate): Ticket {
-    return {
-      ticket_id: 1,
-      description: ticket.description,
-      status: ticket.status,
-      date: ticket.date,
-      actions: ['update', 'delete'],
-    };
-  }
-
-  delete_ticket(ticket_id: number) {
-    console.log(`The ticket number ${ticket_id} id deleted successfully`);
+  delete_ticket(ticketId: string) {
+    console.log(`The ticket number ${ticketId} id deleted successfully`);
+    return this.http.delete<void>(`${this.apiUrl}/ticket/${ticketId}`);
   }
 }
